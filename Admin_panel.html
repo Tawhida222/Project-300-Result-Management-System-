@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Results Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --dark: #2b2d42;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border: #dee2e6;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--dark);
+            color: white;
+            padding: 20px 0;
+            transition: all 0.3s;
+        }
+        
+        .logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: var(--success);
+        }
+        
+        .nav-item {
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .nav-item i {
+            width: 24px;
+            text-align: center;
+        }
+        
+        /* Main content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header h2 {
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        /* Dashboard */
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        .stat-icon.students {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        }
+        
+        .stat-icon.results {
+            background: linear-gradient(135deg, var(--secondary), #5a189a);
+        }
+        
+        .stat-icon.courses {
+            background: linear-gradient(135deg, #f72585, #b5179e);
+        }
+        
+        .stat-data {
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        
+        /* Actions */
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .btn-success {
+            background: #06d6a0;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 1rem;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        /* Results Table */
+        .results-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .table-responsive {
+            overflow-x: auto;
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+        
+        .results-table th {
+            background: var(--light);
+            padding: 16px 20px;
+            text-align: left;
+            color: var(--gray);
+            font-weight: 600;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .results-table td {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .results-table tr:hover {
+            background-color: rgba(67, 97, 238, 0.03);
+        }
+        
+        .grade {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .grade.a {
+            background-color: rgba(76, 175, 80, 0.15);
+            color: #4CAF50;
+        }
+        
+        .grade.b {
+            background-color: rgba(255, 193, 7, 0.15);
+            color: #FFC107;
+        }
+        
+        .grade.c {
+            background-color: rgba(255, 152, 0, 0.15);
+            color: #FF9800;
+        }
+        
+        .grade.d {
+            background-color: rgba(244, 67, 54, 0.15);
+            color: #F44336;
+        }
+        
+        .action-cell {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        
+        .btn-icon.edit {
+            background: rgba(76, 175, 80, 0.15);
+            color: #4CAF50;
+        }
+        
+        .btn-icon.edit:hover {
+            background: rgba(76, 175, 80, 0.25);
+        }
+        
+        .btn-icon.delete {
+            background: rgba(244, 67, 54, 0.15);
+            color: #F44336;
+        }
+        
+        .btn-icon.delete:hover {
+            background: rgba(244, 67, 54, 0.25);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.4rem;
+            color: var(--dark);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .modal-body {
+            padding: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .modal-footer {
+            padding: 20px 25px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+        
+        /* File Upload */
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.03);
+        }
+        
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            margin-bottom: 15px;
+        }
+        
+        .upload-note {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Backend Console */
+        .backend-console {
+            background: var(--dark);
+            border-radius: 12px;
+            padding: 25px;
+            color: var(--success);
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            margin-top: 30px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .console-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: white;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .terminal-line {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        
+        .terminal-prompt {
+            color: var(--primary);
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 900px) {
+            .admin-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .action-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-box {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1><i class="fas fa-graduation-cap"></i> EduAdmin</h1>
+            </div>
+            
+            <div class="nav-item active" data-target="dashboard">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="nav-item" data-target="students">
+                <i class="fas fa-user-graduate"></i>
+                <span>Students</span>
+            </div>
+            <div class="nav-item" data-target="courses">
+                <i class="fas fa-book"></i>
+                <span>Courses</span>
+            </div>
+            <div class="nav-item" data-target="analytics">
+                <i class="fas fa-chart-line"></i>
+                <span>Analytics</span>
+            </div>
+            <div class="nav-item" data-target="settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </div>
+            <div class="nav-item" id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h2 id="page-title">Exam Results Management</h2>
+                <div class="user-info">
+                    <div class="user-avatar">AD</div>
+                    <div>
+                        <div>Admin User</div>
+                        <div style="font-size: 0.9rem; color: var(--gray);">Administrator</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Content -->
+            <div id="dashboard-content">
+                <!-- Dashboard Stats -->
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon students">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-data">
+                            <div class="stat-value">1,245</div>
+                            <div class="stat-label">Total Students</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon results">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <div class="stat-data">
+                            <div class="stat-value">8,760</div>
+                            <div class="stat-label">Results Processed</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon courses">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="stat-data">
+                            <div class="stat-value">84</div>
+                            <div class="stat-label">Active Courses</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Bar -->
+                <div class="action-bar">
+                    <div>
+                        <button class="btn btn-primary" id="add-result-btn">
+                            <i class="fas fa-plus"></i> Add New Result
+                        </button>
+                        <button class="btn btn-success" id="upload-results-btn">
+                            <i class="fas fa-upload"></i> Upload Results
+                        </button>
+                    </div>
+                    
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-input" placeholder="Search results...">
+                    </div>
+                </div>
+                
+                <!-- Results Table -->
+                <div class="results-card">
+                    <div class="table-responsive">
+                        <table class="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Name</th>
+                                    <th>Course</th>
+                                    <th>Semester</th>
+                                    <th>Credits</th>
+                                    <th>Grade</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="results-body">
+                                <!-- Results will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Analytics Content -->
+            <div id="analytics-content" class="hidden">
+                <div class="action-bar">
+                    <div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-download"></i> Export Report
+                        </button>
+                    </div>
+                    <div>
+                        <select id="analytics-period" class="form-control">
+                            <option value="week">Last Week</option>
+                            <option value="month" selected>Last Month</option>
+                            <option value="quarter">Last Quarter</option>
+                            <option value="year">Last Year</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="results-card">
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 2;">
+                            <h3>Grade Distribution</h3>
+                            <canvas id="grade-chart" height="250"></canvas>
+                        </div>
+                        <div class="form-group">
+                            <h3>Results by Status</h3>
+                            <canvas id="status-chart" height="250"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <h3>Performance Trends</h3>
+                        <canvas id="trend-chart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Backend Console -->
+            <div class="backend-console">
+                <div class="console-header">
+                    <h3><i class="fas fa-server"></i> Backend Activity Log</h3>
+                    <span>Status: <span id="backend-status" style="color: #06d6a0;">Active</span></span>
+                </div>
+                <div id="console-output">
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">[08:45:32]</span>
+                        <span>Admin panel initialized</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">[08:45:35]</span>
+                        <span>Loading exam results from database...</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">[08:45:37]</span>
+                        <span>12 results loaded successfully</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add/Edit Result Modal -->
+    <div class="modal" id="result-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Add Exam Result</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="student-id">Student ID</label>
+                        <input type="text" id="student-id" class="form-control" placeholder="Enter student ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Student Name</label>
+                        <input type="text" id="name" class="form-control" placeholder="Enter student name">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="course">Course</label>
+                        <select id="course" class="form-control">
+                            <option value="">Select a course</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Biology">Biology</option>
+                            <option value="English">English</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="semester">Semester</label>
+                        <select id="semester" class="form-control">
+                            <option value="">Select semester</option>
+                            <option value="Fall 2023">Fall 2023</option>
+                            <option value="Spring 2023">Spring 2023</option>
+                            <option value="Fall 2022">Fall 2022</option>
+                            <option value="Spring 2022">Spring 2022</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="credits">Credits</label>
+                        <input type="number" id="credits" class="form-control" min="1" max="6" placeholder="Enter credits">
+                    </div>
+                    <div class="form-group">
+                        <label for="grade">Grade</label>
+                        <select id="grade" class="form-control">
+                            <option value="">Select grade</option>
+                            <option value="A">A (Excellent)</option>
+                            <option value="B">B (Good)</option>
+                            <option value="C">C (Average)</option>
+                            <option value="D">D (Below Average)</option>
+                            <option value="F">F (Fail)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" class="form-control">
+                        <option value="Published">Published</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Draft">Draft</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancel-btn">Cancel</button>
+                <button class="btn btn-primary" id="save-result-btn">Save Result</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Upload Results Modal -->
+    <div class="modal" id="upload-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Upload Exam Results</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="drop-area">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <div class="upload-text">
+                        <h4>Drag & Drop your file here</h4>
+                        <p>or</p>
+                    </div>
+                    <button class="btn btn-primary" id="browse-btn">
+                        <i class="fas fa-folder-open"></i> Browse Files
+                    </button>
+                    <div class="upload-note">
+                        <p>Supported formats: CSV, XLSX (Max file size: 10MB)</p>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>File Information</label>
+                    <div style="background: var(--light); border-radius: 8px; padding: 15px;">
+                        <p><strong>File Format Requirements:</strong></p>
+                        <p>Your CSV file should have the following columns in order:</p>
+                        <p>Student ID, Student Name, Course, Semester, Credits, Grade, Status</p>
+                        <p>Example: S2023001,John Doe,Mathematics,Fall 2023,4,A,Published</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancel-upload-btn">Cancel</button>
+                <button class="btn btn-primary" id="process-upload-btn">Process File</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample exam results data
+        const examResults = [
+            { id: 1, studentId: "S2023001", name: "John Doe", course: "Mathematics", semester: "Fall 2023", credits: 4, grade: "A", status: "Published" },
+            { id: 2, studentId: "S2023002", name: "Jane Smith", course: "Computer Science", semester: "Fall 2023", credits: 5, grade: "B", status: "Published" },
+            { id: 3, studentId: "S2023003", name: "Robert Johnson", course: "Physics", semester: "Fall 2023", credits: 4, grade: "A", status: "Published" },
+            { id: 4, studentId: "S2023004", name: "Emily Davis", course: "Chemistry", semester: "Fall 2023", credits: 3, grade: "C", status: "Published" },
+            { id: 5, studentId: "S2023005", name: "Michael Brown", course: "Biology", semester: "Fall 2023", credits: 4, grade: "B", status: "Pending" },
+            { id: 6, studentId: "S2023006", name: "Sarah Wilson", course: "English", semester: "Fall 2023", credits: 3, grade: "A", status: "Published" },
+            { id: 7, studentId: "S2023007", name: "David Taylor", course: "Mathematics", semester: "Fall 2023", credits: 4, grade: "D", status: "Draft" },
+            { id: 8, studentId: "S2023008", name: "Jennifer Lee", course: "Computer Science", semester: "Fall 2023", credits: 5, grade: "A", status: "Published" }
+        ];
+        
+        // DOM Elements
+        const resultsBody = document.getElementById('results-body');
+        const resultModal = document.getElementById('result-modal');
+        const uploadModal = document.getElementById('upload-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const consoleOutput = document.getElementById('console-output');
+        const searchInput = document.getElementById('search-input');
+        const navItems = document.querySelectorAll('.nav-item');
+        const pageTitle = document.getElementById('page-title');
+        const dashboardContent = document.getElementById('dashboard-content');
+        const analyticsContent = document.getElementById('analytics-content');
+        
+        // Charts
+        let gradeChart, statusChart, trendChart;
+        
+        // Initialize the results table
+        function renderResults(results = examResults) {
+            resultsBody.innerHTML = '';
+            
+            if (results.length === 0) {
+                resultsBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 30px;">
+                            <i class="fas fa-inbox" style="font-size: 3rem; opacity: 0.3; margin-bottom: 15px;"></i>
+                            <h3>No results found</h3>
+                            <p>Try adjusting your search or add new results</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            results.forEach(result => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${result.studentId}</td>
+                    <td>${result.name}</td>
+                    <td>${result.course}</td>
+                    <td>${result.semester}</td>
+                    <td>${result.credits}</td>
+                    <td><span class="grade ${result.grade.toLowerCase()}">${result.grade}</span></td>
+                    <td>${result.status}</td>
+                    <td class="action-cell">
+                        <button class="btn-icon edit" data-id="${result.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-icon delete" data-id="${result.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                resultsBody.appendChild(row);
+            });
+            
+            // Add event listeners to action buttons
+            document.querySelectorAll('.btn-icon.edit').forEach(btn => {
+                btn.addEventListener('click', () => editResult(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('.btn-icon.delete').forEach(btn => {
+                btn.addEventListener('click', () => deleteResult(btn.dataset.id));
+            });
+        }
+        
+        // Log to backend console
+        function logToConsole(message) {
+            const now = new Date();
+            const timestamp = `[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}]`;
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = 'terminal-line';
+            logEntry.innerHTML = `
+                <span class="terminal-prompt">${timestamp}</span>
+                <span>${message}</span>
+            `;
+            
+            consoleOutput.appendChild(logEntry);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        // Open modal for adding a new result
+        function openAddModal() {
+            modalTitle.textContent = 'Add Exam Result';
+            document.getElementById('student-id').value = '';
+            document.getElementById('name').value = '';
+            document.getElementById('course').value = '';
+            document.getElementById('semester').value = '';
+            document.getElementById('credits').value = '';
+            document.getElementById('grade').value = '';
+            document.getElementById('status').value = 'Published';
+            resultModal.style.display = 'flex';
+        }
+        
+        // Edit result
+        function editResult(id) {
+            const result = examResults.find(r => r.id == id);
+            
+            if (result) {
+                modalTitle.textContent = 'Edit Exam Result';
+                document.getElementById('student-id').value = result.studentId;
+                document.getElementById('name').value = result.name;
+                document.getElementById('course').value = result.course;
+                document.getElementById('semester').value = result.semester;
+                document.getElementById('credits').value = result.credits;
+                document.getElementById('grade').value = result.grade;
+                document.getElementById('status').value = result.status;
+                
+                // Store the current ID for saving
+                document.getElementById('save-result-btn').dataset.id = id;
+                
+                resultModal.style.display = 'flex';
+                logToConsole(`Editing result for student: ${result.studentId}`);
+            }
+        }
+        
+        // Save result (add or update)
+        function saveResult() {
+            const studentId = document.getElementById('student-id').value;
+            const name = document.getElementById('name').value;
+            const course = document.getElementById('course').value;
+            const semester = document.getElementById('semester').value;
+            const credits = document.getElementById('credits').value;
+            const grade = document.getElementById('grade').value;
+            const status = document.getElementById('status').value;
+            
+            if (!studentId || !name || !course || !semester || !credits || !grade) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            const id = document.getElementById('save-result-btn').dataset.id;
+            
+            if (id) {
+                // Update existing result
+                const index = examResults.findIndex(r => r.id == id);
+                if (index !== -1) {
+                    examResults[index] = {
+                        ...examResults[index],
+                        studentId, name, course, semester, credits: parseInt(credits), grade, status
+                    };
+                    logToConsole(`Updated result for student: ${studentId}`);
+                }
+            } else {
+                // Add new result
+                const newId = examResults.length > 0 ? Math.max(...examResults.map(r => r.id)) + 1 : 1;
+                examResults.push({
+                    id: newId,
+                    studentId, name, course, semester, 
+                    credits: parseInt(credits), grade, status
+                });
+                logToConsole(`Added new result for student: ${studentId}`);
+            }
+            
+            renderResults();
+            closeModal();
+        }
+        
+        // Delete result
+        function deleteResult(id) {
+            if (confirm('Are you sure you want to delete this result?')) {
+                const index = examResults.findIndex(r => r.id == id);
+                if (index !== -1) {
+                    const studentId = examResults[index].studentId;
+                    examResults.splice(index, 1);
+                    renderResults();
+                    logToConsole(`Deleted result for student: ${studentId}`);
+                }
+            }
+        }
+        
+        // Close modal
+        function closeModal() {
+            resultModal.style.display = 'none';
+            uploadModal.style.display = 'none';
+            document.getElementById('save-result-btn').dataset.id = '';
+        }
+        
+        // Open upload modal
+        function openUploadModal() {
+            uploadModal.style.display = 'flex';
+        }
+        
+        // Simulate file upload processing
+        function processUpload() {
+            logToConsole("Starting file upload processing...");
+            
+            // Simulate processing delay
+            setTimeout(() => {
+                // Simulate adding new results from file
+                const newResults = [
+                    { id: examResults.length + 1, studentId: "S2023009", name: "Alex Turner", course: "Physics", semester: "Fall 2023", credits: 4, grade: "B", status: "Published" },
+                    { id: examResults.length + 2, studentId: "S2023010", name: "Sophia Martinez", course: "Chemistry", semester: "Fall 2023", credits: 3, grade: "A", status: "Published" }
+                ];
+                
+                examResults.push(...newResults);
+                renderResults();
+                
+                logToConsole("File processed successfully");
+                logToConsole("Added 2 new results from uploaded file");
+                
+                alert('File processed successfully! 2 new results added.');
+                closeModal();
+            }, 2000);
+        }
+        
+        // Search functionality
+        function searchResults() {
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            if (!searchTerm) {
+                renderResults();
+                return;
+            }
+            
+            const filteredResults = examResults.filter(result => 
+                result.studentId.toLowerCase().includes(searchTerm) ||
+                result.name.toLowerCase().includes(searchTerm) ||
+                result.course.toLowerCase().includes(searchTerm) ||
+                result.semester.toLowerCase().includes(searchTerm) ||
+                result.grade.toLowerCase().includes(searchTerm) ||
+                result.status.toLowerCase().includes(searchTerm)
+            );
+            
+            renderResults(filteredResults);
+        }
+        
+        // Navigation functionality
+        function navigateTo(target) {
+            // Update active nav item
+            navItems.forEach(item => {
+                if (item.dataset.target === target) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            
+            // Update page content
+            if (target === 'dashboard') {
+                pageTitle.textContent = "Exam Results Management";
+                dashboardContent.classList.remove('hidden');
+                analyticsContent.classList.add('hidden');
+            } else if (target === 'analytics') {
+                pageTitle.textContent = "Analytics & Reports";
+                dashboardContent.classList.add('hidden');
+                analyticsContent.classList.remove('hidden');
+                renderAnalyticsCharts();
+            } else {
+                pageTitle.textContent = target.charAt(0).toUpperCase() + target.slice(1);
+                dashboardContent.classList.add('hidden');
+                analyticsContent.classList.add('hidden');
+                logToConsole(`Navigated to ${target} section`);
+            }
+        }
+        
+        // Render analytics charts
+        function renderAnalyticsCharts() {
+            // Destroy existing charts if they exist
+            if (gradeChart) gradeChart.destroy();
+            if (statusChart) statusChart.destroy();
+            if (trendChart) trendChart.destroy();
+            
+            // Grade Distribution Chart
+            const gradeCtx = document.getElementById('grade-chart').getContext('2d');
+            gradeChart = new Chart(gradeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['A', 'B', 'C', 'D', 'F'],
+                    datasets: [{
+                        label: 'Number of Students',
+                        data: [42, 35, 18, 7, 3],
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.7)',
+                            'rgba(255, 193, 7, 0.7)',
+                            'rgba(255, 152, 0, 0.7)',
+                            'rgba(244, 67, 54, 0.7)',
+                            'rgba(158, 158, 158, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(76, 175, 80, 1)',
+                            'rgba(255, 193, 7, 1)',
+                            'rgba(255, 152, 0, 1)',
+                            'rgba(244, 67, 54, 1)',
+                            'rgba(158, 158, 158, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Students'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Status Distribution Chart
+            const statusCtx = document.getElementById('status-chart').getContext('2d');
+            statusChart = new Chart(statusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Published', 'Pending', 'Draft'],
+                    datasets: [{
+                        label: 'Results by Status',
+                        data: [78, 15, 7],
+                        backgroundColor: [
+                            'rgba(67, 97, 238, 0.7)',
+                            'rgba(255, 193, 7, 0.7)',
+                            'rgba(158, 158, 158, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(67, 97, 238, 1)',
+                            'rgba(255, 193, 7, 1)',
+                            'rgba(158, 158, 158, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            
+            // Performance Trend Chart
+            const trendCtx = document.getElementById('trend-chart').getContext('2d');
+            trendChart = new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [
+                        {
+                            label: 'Average Grade',
+                            data: [3.2, 3.5, 3.7, 3.8, 3.9, 3.7, 3.6, 3.8, 3.9, 4.0, 3.8, 3.9],
+                            borderColor: 'rgba(67, 97, 238, 1)',
+                            backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Pass Rate',
+                            data: [82, 85, 88, 89, 90, 88, 87, 89, 91, 92, 90, 91],
+                            borderColor: 'rgba(76, 175, 80, 1)',
+                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 0,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return this.getLabelForValue(value) + (this.scale.id === 'y' ? '%' : '');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Logout functionality
+        function logout() {
+            logToConsole("User logged out. Session terminated.");
+            document.getElementById('backend-status').textContent = "Inactive";
+            document.getElementById('backend-status').style.color = "#f72585";
+            
+            // Simulate logout process
+            setTimeout(() => {
+                alert("You have been logged out successfully.");
+                window.location.reload();
+            }, 1500);
+        }
+        
+        // Event Listeners
+        document.getElementById('add-result-btn').addEventListener('click', openAddModal);
+        document.getElementById('upload-results-btn').addEventListener('click', openUploadModal);
+        document.getElementById('save-result-btn').addEventListener('click', saveResult);
+        document.getElementById('process-upload-btn').addEventListener('click', processUpload);
+        document.getElementById('browse-btn').addEventListener('click', () => {
+            logToConsole("File browser opened");
+        });
+        
+        document.querySelectorAll('.close-modal').forEach(btn => {
+            btn.addEventListener('click', closeModal);
+        });
+        
+        document.getElementById('cancel-btn').addEventListener('click', closeModal);
+        document.getElementById('cancel-upload-btn').addEventListener('click', closeModal);
+        
+        searchInput.addEventListener('input', searchResults);
+        
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (item.id === 'logout-btn') {
+                    logout();
+                } else {
+                    navigateTo(item.dataset.target);
+                }
+            });
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === resultModal || e.target === uploadModal) {
+                closeModal();
+            }
+        });
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            renderResults();
+            logToConsole("Admin panel initialized successfully");
+            logToConsole("Connected to MongoDB database");
+            logToConsole("Backend API running on port 5000");
+            logToConsole("JWT authentication enabled");
+            
+            // Initialize navigation
+            navigateTo('dashboard');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="login.css" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e9ecef 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+        
+        .university-info {
+            flex: 1;
+            background: linear-gradient(135deg, #1a3a8f 0%, #2c5cc5 100%);
+            color: white;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .university-logo {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        
+        .university-logo i {
+            font-size: 50px;
+            color: white;
+        }
+        
+        .university-info h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .university-info h2 {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        
+        .feature i {
+            font-size: 18px;
+            margin-right: 15px;
+            color: #a8c6ff;
+        }
+        
+        .login-container {
+            flex: 1;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .welcome-note {
+            margin-bottom: 35px;
+        }
+        
+        .welcome-note h2 {
+            color: #1a3a8f;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-note p {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .login-form {
+            width: 100%;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1a3a8f;
+            font-weight: 500;
+            font-size: 15px;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+        
+        .input-with-icon input {
+            width: 100%;
+            padding: 14px 14px 14px 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .input-with-icon input:focus {
+            border-color: #1a3a8f;
+            box-shadow: 0 0 0 3px rgba(26, 58, 143, 0.1);
+            outline: none;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, #1a3a8f, #2c5cc5);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(26, 58, 143, 0.3);
+        }
+        
+        .login-btn:hover {
+            background: linear-gradient(to right, #16317a, #254eae);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 58, 143, 0.4);
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .form-footer a {
+            color: #1a3a8f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .university-info {
+                padding: 30px 25px;
+            }
+            
+            .login-container {
+                padding: 40px 25px;
+            }
+        }
+        
+        .domain-note {
+            font-size: 13px;
+            color: #777;
+            margin-top: 5px;
+            font-style: italic;
+        }
+    </style>
+
+<body>
+    <div class="container">
+        <div class="university-info">
+            <div class="university-logo">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1>METROPOLITAN UNIVERSITY OF BANGLADESH</h1>
+            <h2>A University for Beauty and Nutrition Education</h2>
+            
+            <div class="feature">
+                <i class="fas fa-book-open"></i>
+                <span>6+ Academic Programs</span>
+            </div>
+            <div class="feature">
+                <i class="fas fa-users"></i>
+                <span>4,000+ Students</span>
+            </div>
+        </div>
+        
+        <div class="login-container">
+            <div class="welcome-note">
+                <h2>Student Portal Login</h2>
+                <p>Welcome to the student portal of Metropolitan University Of Bangladesh. Only valid students of Metropolitan University Of Bangladesh are eligible to use this portal. To get any service from this portal please provide your email and password.</p>
+            </div>
+            
+  <div class="container">
+    <div class="box">
+      <form action="login.php" method="POST">
+  <input type="email" name="email" placeholder="Email" required />
+  <input type="password" name="password" placeholder="Password" required />
+  <button type="submit">Login</button>
+</form>
+
+        <p class="switch">Don't have an account? <a href="signup.html">Sign up</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+
+     
+
+      if (user && user.email === email && user.password === password) {
+        alert("Login successful!");
+        window.location.href = "welcome.html";
+      } else {
+        alert("Invalid email or password.");
+      }
+    });
+  </script>
+</body>
+</html>
