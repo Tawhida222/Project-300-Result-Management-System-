@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #acb4bc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        .search-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            border-top: 5px solid #007bff; /* Accent color */
+        }
+
+        h1 {
+            color: #007bff;
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 2.2em;
+        }
+
+        .search-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .input-group input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box; /* Ensures padding is included in the width */
+        }
+
+        .input-group input[type="text"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .search-button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 600;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .clear-button {
+            background-color: #6c757d;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 600;
+        }
+
+        .clear-button:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .search-results {
+            margin-top: 40px;
+            text-align: left;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+            display: none; /* Initially hidden */
+        }
+
+        .search-results h2 {
+            color: #007bff;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .search-results ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .search-results li {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.05em;
+        }
+
+        .search-results li strong {
+            color: #333;
+        }
+
+        .search-results .no-results {
+            color: #dc3545;
+            font-style: italic;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .search-container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-button, .clear-button {
+                width: 100%;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <h1>Student Search Function</h1>
+
+        <form class="search-form">
+            <div class="input-group">
+                <label for="studentId">Student ID:</label>
+                <input type="text" id="studentId" name="studentId" placeholder="e.g., S12345">
+            </div>
+
+            <div class="input-group">
+                <label for="studentName">Student Name:</label>
+                <input type="text" id="studentName" name="studentName" placeholder="e.g., John Doe">
+            </div>
+
+            <div class="input-group">
+                <label for="batch">Batch:</label>
+                <input type="text" id="batch" name="batch" placeholder="e.g., Fall 2023, 25th Batch">
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="search-button"><a href="admin panel.html">Search</a></button>
+                <button type="reset" class="clear-button">Clear</button>
+            </div>
+        </form>
+
+        <div class="search-results" id="searchResults">
+            <h2>Search Results</h2>
+            <ul id="resultsList">
+                <li class="no-results">No results found.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const searchForm = document.querySelector('.search-form');
+        const searchResultsDiv = document.getElementById('searchResults');
+        const resultsList = document.getElementById('resultsList');
+        const studentIdInput = document.getElementById('studentId');
+        const studentNameInput = document.getElementById('studentName');
+        const batchInput = document.getElementById('batch');
+
+        searchForm.addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const studentId = studentIdInput.value.trim();
+            const studentName = studentNameInput.value.trim();
+            const batch = batchInput.value.trim();
+
+            // Build query parameters
+            const params = new URLSearchParams();
+            if (studentId) params.append('studentId', studentId);
+            if (studentName) params.append('studentName', studentName);
+            if (batch) params.append('batch', batch);
+
+            // Construct the URL for the API call
+            const apiUrl = `/search_students?${params.toString()}`;
+
+            resultsList.innerHTML = ''; // Clear previous results
+            searchResultsDiv.style.display = 'block'; // Show results div
+
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const results = await response.json();
+
+                if (results.length > 0) {
+                    results.forEach(student => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<strong>ID:</strong> ${student.id} | <strong>Name:</strong> ${student.name} | <strong>Batch:</strong> ${student.batch}`;
+                        resultsList.appendChild(li);
+                    });
+                } else {
+                    const li = document.createElement('li');
+                    li.className = 'no-results';
+                    li.textContent = 'No results found for your query.';
+                    resultsList.appendChild(li);
+                }
+            } catch (error) {
+                console.error('Error fetching search results:', error);
+                const li = document.createElement('li');
+                li.className = 'no-results';
+                li.textContent = 'An error occurred while searching. Please try again.';
+                resultsList.appendChild(li);
+            }
+        });
+
+        searchForm.addEventListener('reset', function() {
+            studentIdInput.value = '';
+            studentNameInput.value = '';
+            batchInput.value = '';
+            resultsList.innerHTML = '<li class="no-results">No results found.</li>';
+            searchResultsDiv.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World University of Bangladesh - Student Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a3a8f;
+            --secondary: #2c5cc5;
+            --accent: #ff6b35;
+            --light: #f5f7fa;
+            --dark: #2d3748;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --info: #3498db;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            position: relative;
+            min-height: 85vh;
+            
+        }
+        
+        .university-info {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .university-logo {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            z-index: 2;
+        }
+        
+        .university-logo i {
+            font-size: 50px;
+            color: white;
+        }
+        
+        .university-info h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            z-index: 2;
+        }
+        
+        .university-info h2 {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            z-index: 2;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            z-index: 2;
+        }
+        
+        .feature i {
+            font-size: 18px;
+            margin-right: 15px;
+            color: #a8c6ff;
+        }
+        
+        .login-container {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .welcome-note {
+            margin-bottom: 35px;
+        }
+        
+        .welcome-note h2 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-note p {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .login-form {
+            width: 100%;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary);
+            font-weight: 500;
+            font-size: 15px;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+        
+        .input-with-icon input {
+            width: 100%;
+            padding: 14px 14px 14px 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .input-with-icon input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 58, 143, 0.1);
+            outline: none;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(26, 58, 143, 0.3);
+        }
+        
+        .login-btn:hover {
+            background: linear-gradient(to right, #16317a, #254eae);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 58, 143, 0.4);
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                min-height: auto;
+            }
+            
+            .university-info {
+                padding: 30px 25px;
+            }
+            
+            .login-container {
+                padding: 30px 25px;
+            }
+        }
+        
+        .domain-note {
+            font-size: 13px;
+            color: #777;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+            cursor: pointer;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.4s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: var(--success);
+        }
+        
+        .notification.error {
+            background: var(--danger);
+        }
+        
+        .notification.info {
+            background: var(--info);
+        }
+        
+        .loader {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .btn-loading .loader {
+            display: block;
+        }
+        
+        .btn-loading span {
+            visibility: hidden;
+        }
+        
+        .forgot-password {
+            text-align: right;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        
+        .forgot-password a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            width: 100%;
+            padding: 30px;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .user-details h3 {
+            font-size: 22px;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+        
+        .user-details p {
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .logout-btn {
+            padding: 10px 20px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            transition: transform 0.3s;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-header i {
+            font-size: 24px;
+            color: var(--primary);
+            margin-right: 15px;
+            width: 50px;
+            height: 50px;
+            background: rgba(26, 58, 143, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-header h3 {
+            font-size: 18px;
+            color: var(--dark);
+        }
+        
+        .notification-list {
+            list-style: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .notification-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--info);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .notification-message {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .notification-time {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .notification-badge {
+            background: var(--accent);
+            color: white;
+            border-radius: 20px;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+        
+        .result-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .result-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .result-status {
+            font-weight: 500;
+        }
+        
+        .result-status.published {
+            color: var(--success);
+        }
+        
+        .result-status.pending {
+            color: var(--warning);
+        }
+        
+        .notification-settings {
+            padding: 20px 0;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .setting-label {
+            font-weight: 500;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--success);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+        
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        
+        .mobile-nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+        
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+            padding: 5px 15px;
+            cursor: pointer;
+        }
+        
+        .mobile-nav-item.active {
+            color: var(--primary);
+        }
+        
+        .mobile-nav-item i {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu {
+                display: block;
+            }
+            
+            .dashboard {
+                padding-bottom: 70px;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .logout-btn {
+                margin-top: 15px;
+                width: 100%;
+            }
+        }
+        
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            width: 100%;
+            padding: 30px;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .admin-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .admin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .admin-form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .admin-form-group label {
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--primary);
+        }
+        
+        .admin-form-group input,
+        .admin-form-group textarea,
+        .admin-form-group select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .admin-form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .admin-btn {
+            padding: 12px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .admin-btn:hover {
+            background: var(--secondary);
+        }
+        
+        .admin-results-list {
+            margin-top: 20px;
+        }
+        
+        .admin-result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .admin-actions button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .publish-btn {
+            background: var(--success);
+            color: white;
+        }
+        
+        .edit-btn {
+            background: var(--info);
+            color: white;
+        }
+        
+        .delete-btn {
+            background: var(--danger);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Section -->
+        <div class="university-info">
+            <div class="university-logo">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1>METROPOLITAN UNIVERSITY OF BANGLADESH</h1>
+            <h2>A University for Beauty and Nutrition Education</h2>
+            
+            <div class="feature">
+                <i class="fas fa-book-open"></i>
+                <span>6+ Academic Programs</span>
+            </div>
+            <div class="feature">
+                <i class="fas fa-users"></i>
+                <span>4,000+ Students</span>
+            </div>
+        </div>
+        
+        <div class="login-container" id="loginSection">
+            <div class="welcome-note">
+                <h2>Student Portal Login</h2>
+                <p>Welcome to the student portal of Metropolitan University Of Bangladesh. Only valid students of Metropolitan University Of Bangladesh are eligible to use this portal. To get any service from this portal please provide your username and password.</p>
+            </div>
+            
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="username@student.wub.edu.bd" required>
+                    </div>
+                    <div class="domain-note">Use your university email address</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                        <i class="fas fa-eye password-toggle" id="passwordToggle"></i>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="#" id="forgotPassword">Forgot Password?</a>
+                    </div>
+                </div>
+                
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span>SIGN IN</span>
+                    <div class="loader"></div>
+                </button>
+                
+
+                    <div style="text-align: center; margin-top: 20px;">
+                    <button type="button" class="login-btn" id="adminLoginBtn" style="background: #555; width: auto; padding: 10px 20px;">
+                        Admin Login
+                    </button>
+                </div>
+            </form>
+            
+            <div class="form-footer">
+                <p>Having trouble signing in? <a href="#" id="supportLink">Contact Support</a></p>
+                <p>© 2025 Metropolitan University of Bangladesh. All Rights Reserved</p>
+            </div>
+        </div>
+        
+        <!-- Dashboard Section -->
+        <div class="dashboard" id="dashboard">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar">SA</div>
+                    <div class="user-details">
+                        <h3>Shahriar Ahmed</h3>
+                        <p>ID: WUB-2023-00123 | B.Sc. in Nutrition Science</p>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <i class="fas fa-bell"></i>
+                        <h3>Notifications</h3>
+                    </div>
+                    <ul class="notification-list" id="notificationList">
+                        <!-- Notifications will be populated here -->
+                    </ul>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <i class="fas fa-poll"></i>
+                        <h3>Recent Results</h3>
+                    </div>
+                    <div class="result-list" id="resultList">
+                        <!-- Results will be populated here -->
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <i class="fas fa-cog"></i>
+                        <h3>Notification Settings</h3>
+                    </div>
+                    <div class="notification-settings">
+                        <div class="setting-item">
+                            <div class="setting-label">Email Notifications</div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="emailToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">SMS Notifications</div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="smsToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">Push Notifications</div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="pushToggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <i class="fas fa-book"></i>
+                        <h3>Academic Resources</h3>
+                    </div>
+                    <div class="resource-list">
+                        <div class="result-item">
+                            <div class="result-title">Course Registration (Fall 2025)</div>
+                            <div class="result-meta">
+                                <span>Deadline: 15 August 2025</span>
+                            </div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-title">Scholarship Application</div>
+                            <div class="result-meta">
+                                <span>Deadline: 30 July 2025</span>
+                            </div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-title">Library Access Portal</div>
+                            <div class="result-meta">
+                                <span>Available 24/7</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i>
+                    <h3>University Announcements</h3>
+                </div>
+                <div class="announcement-list" id="announcementList">
+                    <!-- Announcements will be populated here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Admin Panel -->
+        <div class="admin-panel" id="adminPanel">
+            <div class="admin-header">
+                <div class="user-info">
+                    <div class="user-avatar">A</div>
+                    <div class="user-details">
+                        <h3>Admin Dashboard</h3>
+                        <p>Metropolitan University of Bangladesh</p>
+                    </div>
+                </div>
+                <button class="logout-btn" id="adminLogoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+            
+            <div class="admin-card">
+                <h3>Publish New Result</h3>
+                <form class="admin-form" id="publishResultForm">
+                    <div class="admin-form-group">
+                        <label for="courseName">Course Name</label>
+                        <input type="text" id="courseName" placeholder="Enter course name" required>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="examType">Exam Type</label>
+                        <select id="examType" required>
+                            <option value="">Select exam type</option>
+                            <option value="Midterm">Midterm Exam</option>
+                            <option value="Final">Final Exam</option>
+                            <option value="Assignment">Assignment</option>
+                            <option value="Quiz">Quiz</option>
+                        </select>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="department">Department</label>
+                        <select id="department" required>
+                            <option value="">Select department</option>
+                            <option value="Nutrition">Nutrition Science</option>
+                            <option value="Beauty">Beauty Therapy</option>
+                            <option value="Food">Food Science</option>
+                            <option value="Health">Health Science</option>
+                        </select>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="semester">Semester</label>
+                        <select id="semester" required>
+                            <option value="">Select semester</option>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                            <option value="5">Semester 5</option>
+                            <option value="6">Semester 6</option>
+                            <option value="7">Semester 7</option>
+                            <option value="8">Semester 8</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="admin-btn">Publish Result</button>
+                </form>
+            </div>
+            
+            <div class="admin-card">
+                <h3>Manage Results</h3>
+                <div class="admin-results-list" id="adminResultsList">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+            
+            <div class="admin-card">
+                <h3>Send Notification</h3>
+                <form class="admin-form" id="sendNotificationForm">
+                    <div class="admin-form-group">
+                        <label for="notificationTitle">Title</label>
+                        <input type="text" id="notificationTitle" placeholder="Enter notification title" required>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="notificationMessage">Message</label>
+                        <textarea id="notificationMessage" placeholder="Enter notification message" required></textarea>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="notificationType">Notification Type</label>
+                        <select id="notificationType" required>
+                            <option value="result">Result Published</option>
+                            <option value="academic">Academic Update</option>
+                            <option value="finance">Financial Notice</option>
+                            <option value="event">University Event</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="admin-btn">Send Notification</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-menu">
+        <div class="mobile-nav">
+            <div class="mobile-nav-item active" data-section="dashboard">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="mobile-nav-item" data-section="courses">
+                <i class="fas fa-book"></i>
+                <span>Courses</span>
+            </div>
+            <div class="mobile-nav-item" data-section="results">
+                <i class="fas fa-poll"></i>
+                <span>Results</span>
+            </div>
+            <div class="mobile-nav-item" data-section="profile">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // ======================
+        // BACKEND SIMULATION
+        // ======================
+        
+        // Database simulation using localStorage
+        class Database {
+            constructor() {
+                this.students = JSON.parse(localStorage.getItem('students')) || [];
+                this.results = JSON.parse(localStorage.getItem('results')) || [];
+                this.notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+                this.admins = JSON.parse(localStorage.getItem('admins')) || [
+                    { id: 1, email: 'admin@wub.edu.bd', password: 'admin123' }
+                ];
+            }
+            
+            saveStudents() {
+                localStorage.setItem('students', JSON.stringify(this.students));
+            }
+            
+            saveResults() {
+                localStorage.setItem('results', JSON.stringify(this.results));
+            }
+            
+            saveNotifications() {
+                localStorage.setItem('notifications', JSON.stringify(this.notifications));
+            }
+            
+            saveAdmins() {
+                localStorage.setItem('admins', JSON.stringify(this.admins));
+            }
+            
+            // Student methods
+            findStudentByEmail(email) {
+                return this.students.find(student => student.email === email);
+            }
+            
+            addStudent(student) {
+                this.students.push(student);
+                this.saveStudents();
+            }
+            
+            // Result methods
+            addResult(result) {
+                this.results.push(result);
+                this.saveResults();
+            }
+            
+            getResultsByDepartment(department) {
+                return this.results.filter(result => result.department === department);
+            }
+            
+            deleteResult(id) {
+                this.results = this.results.filter(result => result.id !== id);
+                this.saveResults();
+            }
+            
+            // Notification methods
+            addNotification(notification) {
+                this.notifications.push(notification);
+                this.saveNotifications();
+            }
+            
+            getNotificationsForStudent(studentId) {
+                return this.notifications.filter(notif => notif.studentId === studentId);
+            }
+            
+            // Admin methods
+            findAdminByEmail(email) {
+                return this.admins.find(admin => admin.email === email);
+            }
+        }
+
+        // Initialize database
+        const db = new Database();
+        
+        // Simulate student data
+        if (db.students.length === 0) {
+            db.addStudent({
+                id: 1,
+                fullName: 'Shahriar Ahmed',
+                email: 'test@student.wub.edu.bd',
+                password: 'password123',
+                studentId: 'WUB-2023-00123',
+                department: 'CSE',
+                semester: '6'
+            });
+        }
+        
+        // Simulate results
+        if (db.results.length === 0) {
+            db.addResult({
+                id: 1,
+                course: 'Nutrition Science',
+                examType: 'Semester Final Exam',
+                department: 'CSE',
+                semester: '6',
+                publishedDate: new Date('2025-07-20').toISOString(),
+                status: 'published'
+            });
+            
+            db.addResult({
+                id: 2,
+                course: 'Physics',
+                examType: 'Midterm Exam',
+                department: 'CSE',
+                semester: '6',
+                publishedDate: new Date('2025-07-15').toISOString(),
+                status: 'published'
+            });
+            
+            db.addResult({
+                id: 3,
+                course: 'Human Physiology',
+                examType: 'Assignment',
+                department: 'CSE',
+                semester: '6',
+                publishedDate: null,
+                status: 'pending'
+            });
+        }
+        
+        // Simulate notifications
+        if (db.notifications.length === 0) {
+            db.addNotification({
+                id: 1,
+                studentId: 1,
+                title: 'New Result Published',
+                message: 'Your Nutrition Science final exam result has been published.',
+                time: new Date().toISOString(),
+                icon: 'fas fa-poll',
+                color: '#3498db',
+                unread: true,
+                type: 'result'
+            });
+            
+            db.addNotification({
+                id: 2,
+                studentId: 1,
+                title: 'Assignment Deadline Extended',
+                message: 'Human Physiology assignment deadline extended to 25th July.',
+                time: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+                icon: 'fas fa-book',
+                color: '#9b59b6',
+                unread: true,
+                type: 'academic'
+            });
+        }
+        
+        // ======================
+        // FRONTEND FUNCTIONALITY
+        // ======================
+        
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const passwordToggle = document.getElementById('passwordToggle');
+        const loginBtn = document.getElementById('loginBtn');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const notification = document.getElementById('notification');
+        const forgotPasswordLink = document.getElementById('forgotPassword');
+        const supportLink = document.getElementById('supportLink');
+        const loginSection = document.getElementById('loginSection');
+        const dashboard = document.getElementById('dashboard');
+        const adminPanel = document.getElementById('adminPanel');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+        const notificationList = document.getElementById('notificationList');
+        const resultList = document.getElementById('resultList');
+        const announcementList = document.getElementById('announcementList');
+        const emailToggle = document.getElementById('emailToggle');
+        const smsToggle = document.getElementById('smsToggle');
+        const pushToggle = document.getElementById('pushToggle');
+        const publishResultForm = document.getElementById('publishResultForm');
+        const sendNotificationForm = document.getElementById('sendNotificationForm');
+        const adminResultsList = document.getElementById('adminResultsList');
+        
+        // State management
+        let currentUser = null;
+        let isAdmin = false;
+        
+        // Password visibility toggle
+        passwordToggle.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+        
+        // Show notification function
+        function showNotification(message, type) {
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Format date for display
+        function formatDate(dateString) {
+            if (!dateString) return 'Not published yet';
+            
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+        
+        // Render notifications
+        function renderNotifications() {
+            if (!currentUser) return;
+            
+            notificationList.innerHTML = '';
+            
+            const notifications = db.getNotificationsForStudent(currentUser.id);
+            
+            notifications.forEach(notif => {
+                const notificationItem = document.createElement('li');
+                notificationItem.className = 'notification-item';
+                
+                notificationItem.innerHTML = `
+                    <div class="notification-icon" style="background: rgba(${hexToRgb(notif.color)}, 0.1); color: ${notif.color}">
+                        <i class="${notif.icon}"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">
+                            ${notif.title}
+                            ${notif.unread ? '<span class="notification-badge">New</span>' : ''}
+                        </div>
+                        <div class="notification-message">${notif.message}</div>
+                        <div class="notification-time">${formatTimeAgo(notif.time)}</div>
+                    </div>
+                `;
+                
+                notificationList.appendChild(notificationItem);
+            });
+        }
+        
+        // Render results
+        function renderResults() {
+            if (!currentUser) return;
+            
+            resultList.innerHTML = '';
+            
+            const results = db.getResultsByDepartment(currentUser.department);
+            
+            results.forEach(result => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                
+                resultItem.innerHTML = `
+                    <div class="result-title">${result.course} - ${result.examType}</div>
+                    <div class="result-meta">
+                        <span>Published: ${formatDate(result.publishedDate)}</span>
+                        <span class="result-status ${result.status}">${result.status.charAt(0).toUpperCase() + result.status.slice(1)}</span>
+                    </div>
+                `;
+                
+                resultList.appendChild(resultItem);
+            });
+        }
+        
+        // Render announcements
+        function renderAnnouncements() {
+            announcementList.innerHTML = '';
+            
+            // These would normally come from the database
+            const announcements = [
+                {
+                    icon: 'fas fa-calendar',
+                    title: 'Summer Vacation Schedule',
+                    message: 'The university will remain closed from 1st August to 15th August 2025 for summer vacation.',
+                    time: new Date('2025-07-20').toISOString()
+                },
+                {
+                    icon: 'fas fa-exclamation-triangle',
+                    title: 'Campus Maintenance',
+                    message: 'The main building will undergo maintenance on 25th July. Classes will be held in temporary locations.',
+                    time: new Date('2025-07-18').toISOString()
+                }
+            ];
+            
+            announcements.forEach(announcement => {
+                const announcementItem = document.createElement('div');
+                announcementItem.className = 'notification-item';
+                
+                announcementItem.innerHTML = `
+                    <div class="notification-icon">
+                        <i class="${announcement.icon}"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">${announcement.title}</div>
+                        <div class="notification-message">${announcement.message}</div>
+                        <div class="notification-time">Posted: ${formatDate(announcement.time)}</div>
+                    </div>
+                `;
+                
+                announcementList.appendChild(announcementItem);
+            });
+        }
+        
+        // Render admin results
+        function renderAdminResults() {
+            adminResultsList.innerHTML = '';
+            
+            db.results.forEach(result => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'admin-result-item';
+                
+                resultItem.innerHTML = `
+                    <div>
+                        <strong>${result.course}</strong> (${result.examType})
+                        <div>${result.department} - Semester ${result.semester}</div>
+                        <div>Status: ${result.status}</div>
+                    </div>
+                    <div class="admin-actions">
+                        ${result.status === 'pending' ? 
+                            `<button class="publish-btn" data-id="${result.id}">Publish</button>` : ''}
+                        <button class="edit-btn" data-id="${result.id}">Edit</button>
+                        <button class="delete-btn" data-id="${result.id}">Delete</button>
+                    </div>
+                `;
+                
+                adminResultsList.appendChild(resultItem);
+            });
+            
+            // Add event listeners to action buttons
+            document.querySelectorAll('.publish-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const resultId = parseInt(btn.dataset.id);
+                    publishResult(resultId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const resultId = parseInt(btn.dataset.id);
+                    deleteResult(resultId);
+                });
+            });
+        }
+        
+        // Hex to RGB conversion for styling
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? 
+                `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 
+                '0, 0, 0';
+        }
+        
+        // Format time ago
+        function formatTimeAgo(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+            
+            if (seconds < 60) return 'Just now';
+            
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes} min ago`;
+            
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours} hr ago`;
+            
+            const days = Math.floor(hours / 24);
+            return `${days} day${days !== 1 ? 's' : ''} ago`;
+        }
+        
+        // Login function
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            
+            // Simple validation
+            if(!email || !password) {
+                showNotification('Please fill in all fields', 'error');
+                return;
+            }
+            
+            // Validate email domain
+            if(!email.endsWith('@student.wub.edu.bd') && !email.endsWith('@wub.edu.bd')) {
+                showNotification('Please use your university email', 'error');
+                return;
+            }
+            
+            // Show loading state
+            loginBtn.classList.add('btn-loading');
+            
+            try {
+                // Simulate network delay
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Check if admin login
+                if (email.endsWith('@wub.edu.bd')) {
+                    const admin = db.findAdminByEmail(email);
+                    
+                    if (admin && admin.password === password) {
+                        isAdmin = true;
+                        showAdminPanel();
+                        showNotification('Admin login successful', 'success');
+                        return;
+                    }
+                }
+                
+                // Student login
+                const student = db.findStudentByEmail(email);
+                
+                if (student && student.password === password) {
+                    currentUser = student;
+                    showDashboard();
+                    showNotification('Login successful!', 'success');
+                } else {
+                    showNotification('Invalid credentials. Please try again.', 'error');
+                }
+            } catch (error) {
+                showNotification('Network error. Please try again later.', 'error');
+            } finally {
+                // Hide loading state
+                loginBtn.classList.remove('btn-loading');
+            }
+        });
+        
+        // Admin login button
+        adminLoginBtn.addEventListener('click', function() {
+            emailInput.value = 'admin@wub.edu.bd';
+            passwordInput.value = 'admin123';
+            showNotification('Admin credentials pre-filled', 'info');
+        });
+        
+        // Show dashboard function
+        function showDashboard() {
+            loginSection.style.display = 'none';
+            dashboard.style.display = 'block';
+            adminPanel.style.display = 'none';
+            
+            renderNotifications();
+            renderResults();
+            renderAnnouncements();
+        }
+        
+        // Show admin panel
+        function showAdminPanel() {
+            loginSection.style.display = 'none';
+            dashboard.style.display = 'none';
+            adminPanel.style.display = 'block';
+            
+            renderAdminResults();
+        }
+        
+        // Logout function
+        function logout() {
+            currentUser = null;
+            isAdmin = false;
+            
+            // Reset form
+            loginForm.reset();
+            
+            // Show login screen
+            dashboard.style.display = 'none';
+            adminPanel.style.display = 'none';
+            loginSection.style.display = 'block';
+            
+            showNotification('You have been logged out', 'info');
+        }
+        
+        logoutBtn.addEventListener('click', logout);
+        adminLogoutBtn.addEventListener('click', logout);
+        
+        // Forgot password functionality
+        forgotPasswordLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showNotification('Password reset instructions sent to your email', 'info');
+        });
+        
+        // Support contact
+        supportLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showNotification('Contact support@wub.edu.bd or call +880 1234 567890', 'info');
+        });
+        
+        // Publish result
+        publishResultForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const courseName = document.getElementById('courseName').value;
+            const examType = document.getElementById('examType').value;
+            const department = document.getElementById('department').value;
+            const semester = document.getElementById('semester').value;
+            
+            if (!courseName || !examType || !department || !semester) {
+                showNotification('Please fill all fields', 'error');
+                return;
+            }
+            
+            const newResult = {
+                id: Date.now(),
+                course: courseName,
+                examType: examType,
+                department: department,
+                semester: semester,
+                publishedDate: new Date().toISOString(),
+                status: 'published'
+            };
+            
+            db.addResult(newResult);
+            renderAdminResults();
+            
+            // Create notification for students
+            const notification = {
+                id: Date.now(),
+                studentId: 1, // In real app, this would be for all students in the department
+                title: 'New Result Published',
+                message: `The result for ${courseName} (${examType}) has been published.`,
+                time: new Date().toISOString(),
+                icon: 'fas fa-poll',
+                color: '#3498db',
+                unread: true,
+                type: 'result'
+            };
+            
+            db.addNotification(notification);
+            
+            showNotification('Result published successfully!', 'success');
+            publishResultForm.reset();
+        });
+        
+        // Send notification
+        sendNotificationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('notificationTitle').value;
+            const message = document.getElementById('notificationMessage').value;
+            const type = document.getElementById('notificationType').value;
+            
+            if (!title || !message) {
+                showNotification('Please fill all fields', 'error');
+                return;
+            }
+            
+            const notification = {
+                id: Date.now(),
+                studentId: 1, // In real app, this would be for all students
+                title: title,
+                message: message,
+                time: new Date().toISOString(),
+                icon: getIconForType(type),
+                color: getColorForType(type),
+                unread: true,
+                type: type
+            };
+            
+            db.addNotification(notification);
+            
+            showNotification('Notification sent successfully!', 'success');
+            sendNotificationForm.reset();
+        });
+        
+        // Helper functions for notifications
+        function getIconForType(type) {
+            switch(type) {
+                case 'result': return 'fas fa-poll';
+                case 'academic': return 'fas fa-book';
+                case 'finance': return 'fas fa-money-bill-wave';
+                case 'event': return 'fas fa-calendar';
+                default: return 'fas fa-bell';
+            }
+        }
+        
+        function getColorForType(type) {
+            switch(type) {
+                case 'result': return '#3498db';
+                case 'academic': return '#9b59b6';
+                case 'finance': return '#2ecc71';
+                case 'event': return '#e74c3c';
+                default: return '#3498db';
+            }
+        }
+        
+        // Publish result from admin panel
+        function publishResult(resultId) {
+            const result = db.results.find(r => r.id === resultId);
+            if (result) {
+                result.status = 'published';
+                result.publishedDate = new Date().toISOString();
+                db.saveResults();
+                renderAdminResults();
+                showNotification('Result published successfully!', 'success');
+            }
+        }
+
+                // Delete result
+        function deleteResult(resultId) {
+            db.deleteResult(resultId);
+            renderAdminResults();
+            showNotification('Result deleted successfully!', 'success');
+        }
+        
+        // Auto-focus email field
+        emailInput.focus();
+    </script>
+</body>
+</html>
